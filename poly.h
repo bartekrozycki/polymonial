@@ -15,7 +15,7 @@ class poly {
 
     public:
 
-    poly (double val = 0)
+    poly (const double val = 0)
     {
         data = new double[DATA_SIZE];
         data_size = DATA_SIZE;
@@ -34,7 +34,7 @@ class poly {
         delete [] data;
     }
     
-    double operator()(double p)
+    double operator()(const double p) const
     {
         double val = 0;
         for (size_t i = 0; i < data_size; i++)
