@@ -1,10 +1,9 @@
-#ifndef POLY_H
-#define POLY_H
+#pragma once
 
 #include <stddef.h>
 #include <iostream>
 #include <algorithm>
-#include <exception>
+#include <math.h>
 
 #define DATA_SIZE 1
 
@@ -34,6 +33,26 @@ class poly {
     {
         delete [] data;
     }
+    
+    double operator()(double p)
+    {
+        double val = 0;
+        for (size_t i = 0; i < data_size; i++)
+            val += data[i] * (pow(p, i));
+        return val;
+    }
+
+    poly & operator =( const poly & o)
+    {
+        delete [] data;
+
+        data = new double[o.data_size];
+
+        std::copy_n(o.data, o.data_size, data);
+        data_size = o.data_size;
+
+        return *this;
+    }
 
     double &operator[] (const size_t size)
     {
@@ -51,39 +70,27 @@ class poly {
         return *(data + size);
     }
 
-    poly& operator+(const poly &arg) const
+    poly operator+(const poly &arg) const
     {
-        poly *p;
-        if (this->data_size > arg.data_size)
-        {
-            p = new poly(*this);
-        
-            for (size_t i = 0; i < this->data_size; i++)
-                p->data[i] += arg.data[i];
-        }
-        else 
-        {
-            p = new poly(arg);
-
-            for (size_t i = 0; i < arg.data_size; i++)
-                p->data[i] += this->data[i];
-        }
-        return *p;
-    }
-
-    poly& operator*(const poly &arg)
-    {
-        poly *p = new poly();
+        poly p;
 
         for (size_t i = 0; i < this->data_size; i++)
-        {
-            for (size_t j = 0; j < arg.data_size; j++)
-            {
-                (*p)[i + j] += (this->data[i] * arg.data[j]); 
-            }
-        }
+            p[i] += this->data[i];
+        for (size_t i = 0; i < arg.data_size; i++)
+            p[i] += arg.data[i];
+            
+        return p;
+    }
 
-        return *p;
+    friend poly operator*(const poly &larg, const poly &rarg) 
+    {
+        poly p;
+
+        for (size_t i = 0; i < rarg.data_size; i++)
+            for (size_t j = 0; j < larg.data_size; j++)
+                p[i + j] += (rarg.data[i] * larg.data[j]); 
+
+        return p;
     }
 
     friend std::ostream & operator<< (std::ostream& cout, const poly &p)
@@ -106,10 +113,4 @@ class poly {
         return cout;
     }
 
-
 };
-inline poly& operator*(const poly &a, const poly &b)
-{
-    return a*b;
-}
-#endif
