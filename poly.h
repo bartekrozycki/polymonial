@@ -25,7 +25,7 @@ class poly {
 
     poly (const poly &o)
     {
-        this->data = new double[o.data_size];
+        this->data = new double[o.data_size]();
         this->data_size = o.data_size;
         std::copy_n(o.data, o.data_size, this->data);
     }
@@ -39,19 +39,19 @@ class poly {
     {
         if (size >= data_size)
         {
-            double *new_data = new double[size + 1];
-            std::copy_n(data, std::min(data_size, size), new_data);
+            double *new_data = new double[size + 1]();
+            std::copy_n(data, data_size, new_data);
 
             delete [] data;
-
             data = new_data;
+
             data_size = size + 1;
         }
         
         return *(data + size);
     }
 
-    poly& operator+(const poly &arg)
+    poly& operator+(const poly &arg) const
     {
         poly *p;
         if (this->data_size > arg.data_size)
@@ -79,7 +79,7 @@ class poly {
         {
             for (size_t j = 0; j < arg.data_size; j++)
             {
-                (*p)[i + j] += this->data[i] * arg.data[j]; 
+                (*p)[i + j] += (this->data[i] * arg.data[j]); 
             }
         }
 
@@ -108,5 +108,8 @@ class poly {
 
 
 };
-
+inline poly& operator*(const poly &a, const poly &b)
+{
+    return a*b;
+}
 #endif

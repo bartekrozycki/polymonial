@@ -5,6 +5,8 @@ using namespace std;
 
 int main(void)
 {
+
+
   poly P1;				//Declare object representing polynomial P1
   P1[3] = 2; P1[1] = 3.6; P1[0] = 7;	//Specify coefficients of P1 = 2x^3 + 3.6x + 7
   
@@ -22,8 +24,8 @@ int main(void)
   P3 = P1 * P2;							//Multiply P1 by P2 	
   cout << "Product of polynomials P1 and P2: " << P3 << endl;	//Print product of P1 and P2
 
-  P3 = 2 * P1;							//Multiply P1 by 2 	
-  cout << "Polynomial P1 multiplied by 2: " << P3 << endl;	//Print product of P1 and 2
+  // P3 = 2 * P1;							//Multiply P1 by 2 	
+  // cout << "Polynomial P1 multiplied by 2: " << P3 << endl;	//Print product of P1 and 2
   
   // double val = P1(3.14);						//Calculate the value of P1 at point 3.14
   // cout << "Value of polynomial P1 at point 3.14: " << val << endl;	//Print the value of P1 at point 3.14
