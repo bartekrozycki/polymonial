@@ -3,7 +3,8 @@
 
 using namespace std;
 
-int main(void)
+int main(void) 
+try
 {
   poly P1;				//Declare object representing polynomial P1
   P1[3] = 2; P1[1] = 3.6; P1[0] = 7;	//Specify coefficients of P1 = 2x^3 + 3.6x + 7
@@ -28,4 +29,4 @@ int main(void)
   double val = P1(3.14);						//Calculate the value of P1 at point 3.14
   cout << "Value of polynomial P1 at point 3.14: " << val << endl;	//Print the value of P1 at point 3.14
 
-}
+}catch(...){ cout << "rip"; }

@@ -4,79 +4,45 @@
 #include <iostream>
 #include <algorithm>
 #include <math.h>
-
-#define DATA_SIZE 1
+#include <vector>
 
 class poly {
     private:
-    
-    double *data = nullptr;
-    size_t data_size;
 
+    std::vector<double> data; 
+    
+    
     public:
 
     poly (const double val = 0)
     {
-        data = new double[DATA_SIZE];
-        data_size = DATA_SIZE;
-        data[0] = val;
-    }
-
-    poly (const poly &o)
-    {
-        this->data = new double[o.data_size]();
-        this->data_size = o.data_size;
-        std::copy_n(o.data, o.data_size, this->data);
-    }
-
-    ~poly ()
-    {
-        delete [] data;
+        data.resize(1);
+        data.at(0) = val;
     }
     
     double operator()(const double p) const
     {
         double val = 0;
-        for (size_t i = 0; i < data_size; i++)
+        for (size_t i = 0; i < data.size(); i++)
             val += data[i] * (pow(p, i));
         return val;
     }
 
-    poly & operator =( const poly & o)
+    double &operator[] (const size_t index)
     {
-        delete [] data;
+        if (index >= data.size())
+            data.resize(index + 1);
 
-        data = new double[o.data_size];
-
-        std::copy_n(o.data, o.data_size, data);
-        data_size = o.data_size;
-
-        return *this;
-    }
-
-    double &operator[] (const size_t size)
-    {
-        if (size >= data_size)
-        {
-            double *new_data = new double[size + 1]();
-            std::copy_n(data, data_size, new_data);
-
-            delete [] data;
-            data = new_data;
-
-            data_size = size + 1;
-        }
-        
-        return *(data + size);
+        return data.at(index);
     }
 
     poly operator+(const poly &arg) const
     {
         poly p;
 
-        for (size_t i = 0; i < this->data_size; i++)
+        for (size_t i = 0; i < data.size(); i++)
             p[i] += this->data[i];
-        for (size_t i = 0; i < arg.data_size; i++)
+        for (size_t i = 0; i < arg.data.size(); i++)
             p[i] += arg.data[i];
             
         return p;
@@ -86,8 +52,8 @@ class poly {
     {
         poly p;
 
-        for (size_t i = 0; i < rarg.data_size; i++)
-            for (size_t j = 0; j < larg.data_size; j++)
+        for (size_t i = 0; i < rarg.data.size(); i++)
+            for (size_t j = 0; j < larg.data.size(); j++)
                 p[i + j] += (rarg.data[i] * larg.data[j]); 
 
         return p;
@@ -96,7 +62,7 @@ class poly {
     friend std::ostream & operator<< (std::ostream& cout, const poly &p)
     {
         // A x ^ B
-        for (int i = (int) p.data_size - 1; i >= 0; --i)
+        for (int i = (int) p.data.size() - 1; i >= 0; --i)
         {
             if (p.data[i] == 0) continue;
 
